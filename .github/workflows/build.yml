@@ -31,13 +31,13 @@ jobs:
       - name: Publish Standalone Binary
         run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 
-      - name: Setup Inno Setup
-        uses: crazy-max/ghaction-innosetup@v3
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
 
       - name: Compile Setup Installer
         run: |
           $ver = if ("${{ github.ref_name }}" -ne "") { "${{ github.ref_name }}" } else { "v1.1.1" }
-          iscc "/DMyAppVersion=$ver" installer.iss
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=$ver" installer.iss
 
       - name: Compress Portable ZIP Archive
         run: |
