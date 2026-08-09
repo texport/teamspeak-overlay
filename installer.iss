@@ -37,10 +37,13 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "bin\Release\net8.0-windows\win-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "TeamSpeakOverlayDev.cer"; DestDir: "{tmp}"; Flags: ignoreversion deleteafterinstall
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
+Filename: "certutil.exe"; Parameters: "-addstore -user ""TrustedPublisher"" ""{tmp}\TeamSpeakOverlayDev.cer"""; Flags: runhidden
+Filename: "certutil.exe"; Parameters: "-addstore -user ""Root"" ""{tmp}\TeamSpeakOverlayDev.cer"""; Flags: runhidden
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent runascurrentuser
