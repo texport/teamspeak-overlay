@@ -48,19 +48,28 @@ TeamSpeakOverlay/
 └── Views/               # Material 3 WPF Окна (OverlayWindow, SettingsWindow)
 ```
 
+## 📦 Установка и Сборка
+
+### 🚀 Варианты установки
+1. **Установочный файл Setup (Рекомендуется)**:
+   Скачайте [`TeamSpeakOverlay-v1.1.0-Alpha-Setup.exe`](https://github.com/texport/teamspeak-overlay/releases) для автоматической установки с созданием ярлыков на рабочем столе и в меню "Пуск".
+2. **Портативная версия (Portable ZIP)**:
+   Скачайте [`TeamSpeakOverlay-v1.1.0-Alpha.zip`](https://github.com/texport/teamspeak-overlay/releases), распакуйте в любую папку и запускайте без установки.
+
 ---
 
-## 🛠 Руководство по сборке
+## 🛠 Руководство по сборке из исходников
 
 ### Требования
 - **ОС**: Windows 10 / 11 (x64)
 - **SDK**: [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **Inno Setup 6** (для сборки инсталлятора `.exe`)
 
-### Сборка из исходников
+### Сборка
 
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/SergeyIvanovPro/teamspeak-overlay.git
+   git clone https://github.com/texport/teamspeak-overlay.git
    cd teamspeak-overlay
    ```
 
@@ -69,16 +78,23 @@ TeamSpeakOverlay/
    dotnet build -c Release
    ```
 
-3. Для создания единого самодостаточного `.exe`:
+3. Для публикации одиночного бинарника:
    ```bash
    dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
    ```
 
-Готовый файл `TeamSpeakOverlay.exe` появится в директории `bin/Release/net8.0-windows/win-x64/publish/`.
+4. Сборка установочного Setup `.exe` (Inno Setup):
+   ```powershell
+   & "ISCC.exe" installer.iss
+   ```
+
+Готовые бинарники и инсталлятор `TeamSpeakOverlay-v1.1.0-Alpha-Setup.exe` генерируются в папку `bin/Release/net8.0-windows/`.
 
 ---
 
 ## 👤 Автор и Лицензия
 
 - **Автор**: [@SergeyIvanovPro](https://github.com/SergeyIvanovPro)
+- **Репозиторий**: [github.com/texport/teamspeak-overlay](https://github.com/texport/teamspeak-overlay)
 - **Лицензия**: Распространяется под открытой лицензией [MIT](LICENSE).
+
