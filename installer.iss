@@ -1,5 +1,5 @@
 #ifndef MyAppVersion
-#define MyAppVersion "1.1.0-Alpha"
+#define MyAppVersion "v1.1.1"
 #endif
 #define MyAppName "TeamSpeak Overlay Pro"
 #define MyAppPublisher "SergeyIvanovPro"
@@ -26,7 +26,7 @@ LicenseFile=LICENSE
 SetupIconFile=app.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 OutputDir=bin\Release\net8.0-windows
-OutputBaseFilename=TeamSpeakOverlay-v1.1.0-Alpha-Setup
+OutputBaseFilename=TeamSpeakOverlay-v1.1.1-Setup
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern

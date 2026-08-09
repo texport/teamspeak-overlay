@@ -1,10 +1,8 @@
-# 🎮 TeamSpeak Overlay Pro v1.1.0-Alpha
+# 🎮 TeamSpeak Overlay Pro v1.1.1
 
 [![Framework](https://img.shields.io/badge/.NET-8.0--WPF-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Framework](https://img.shields.io/badge/.NET-8.0--WPF-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-v1.1.0--Alpha-orange.svg)](https://github.com/texport/teamspeak-overlay/releases)
+[![Version](https://img.shields.io/badge/Version-v1.1.1-orange.svg)](https://github.com/texport/teamspeak-overlay/releases)
 [![Languages](https://img.shields.io/badge/Languages-RU%20|%20EN%20|%20UK-brightgreen)](#-мультиязычность)
 [![Lineage II](https://img.shields.io/badge/Lineage%20II-Supported-00E5FF)](https://github.com/texport/teamspeak-overlay)
 [![Design](https://img.shields.io/badge/UI-Material%20Design%203-6750A4)](https://m3.material.io/)
@@ -63,9 +61,9 @@ TeamSpeakOverlay/
 
 ### 🚀 Варианты установки
 1. **Установочный файл Setup (Рекомендуется)**:
-   Скачайте [`TeamSpeakOverlay-v1.1.0-Alpha-Setup.exe`](https://github.com/texport/teamspeak-overlay/releases) для автоматической установки с созданием ярлыков на рабочем столе и в меню "Пуск".
+   Скачайте [`TeamSpeakOverlay-v1.1.1-Setup.exe`](https://github.com/texport/teamspeak-overlay/releases) для автоматической установки с созданием ярлыков на рабочем столе и в меню "Пуск".
 2. **Портативная версия (Portable ZIP)**:
-   Скачайте [`TeamSpeakOverlay-v1.1.0-Alpha.zip`](https://github.com/texport/teamspeak-overlay/releases), распакуйте в любую папку и запускайте без установки.
+   Скачайте [`TeamSpeakOverlay-v1.1.1.zip`](https://github.com/texport/teamspeak-overlay/releases), распакуйте в любую папку и запускайте без установки.
 
 ---
 
