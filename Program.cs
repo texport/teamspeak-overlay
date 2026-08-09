@@ -31,8 +31,9 @@ namespace TeamSpeakOverlay
             }
             catch (Exception ex)
             {
-                Logger.Error("Fatal unhandled exception in Program.Main", ex, "Main");
-                System.Windows.MessageBox.Show($"Application error: {ex.Message}\n\nCheck overlay.log for details.", "TeamSpeak Overlay Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                string details = ex.InnerException != null ? $"{ex.Message}\nInner: {ex.InnerException.Message}" : ex.Message;
+                Logger.Error("Fatal unhandled exception in Program.Main: " + details, ex, "Main");
+                System.Windows.MessageBox.Show($"Application error:\n{details}\n\nFull log written to overlay.log", "TeamSpeak Overlay Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
             finally
             {

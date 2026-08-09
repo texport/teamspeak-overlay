@@ -94,7 +94,7 @@ namespace TeamSpeakOverlay.Infrastructure.Win32
             {
                 try
                 {
-                    string path = System.IO.File.Exists(Logger.LocalLogPath) ? Logger.LocalLogPath : Logger.AppDataLogPath;
+                    string path = Logger.AppDataLogPath;
                     if (System.IO.File.Exists(path))
                     {
                         Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });

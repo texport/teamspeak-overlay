@@ -37,7 +37,6 @@ namespace TeamSpeakOverlay.Infrastructure.Logging
 
             lock (_lock)
             {
-                WriteToFile(LocalLogPath, line);
                 WriteToFile(AppDataLogPath, line);
             }
         }
