@@ -1,6 +1,7 @@
-; Inno Setup Script for TeamSpeak Overlay Pro v1.1.0-Alpha
-#define MyAppName "TeamSpeak Overlay Pro"
+#ifndef MyAppVersion
 #define MyAppVersion "1.1.0-Alpha"
+#endif
+#define MyAppName "TeamSpeak Overlay Pro"
 #define MyAppPublisher "SergeyIvanovPro"
 #define MyAppURL "https://github.com/texport/teamspeak-overlay"
 #define MyAppExeName "TeamSpeakOverlay.exe"
