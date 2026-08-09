@@ -168,4 +168,9 @@
     <sys:String x:Key="Enum_WhisperAccentColor_ElectricOrange">Електрик Оранжевий</sys:String>
     <sys:String x:Key="Enum_WhisperAccentColor_HotPurple">Яскравий Фіолетовий</sys:String>
     <sys:String x:Key="Enum_WhisperAccentColor_CyanBlue">Ціаново-Блакитний</sys:String>
+    <!-- System Tray Menu -->
+    <sys:String x:Key="Tray_OpenSettings">⚙️ Налаштування</sys:String>
+    <sys:String x:Key="Tray_CheckForUpdates">🚀 Перевірити оновлення</sys:String>
+    <sys:String x:Key="Tray_ViewLog">📜 Перегляд лог-файлу</sys:String>
+    <sys:String x:Key="Tray_Exit">❌ Вихід</sys:String>
 </ResourceDictionary>

@@ -183,4 +183,9 @@
     <sys:String x:Key="Enum_TeamSpeakConnectionMode_Auto">Auto Detect (TS3 &amp; TS6 Dual-Scan)</sys:String>
     <sys:String x:Key="Enum_TeamSpeakConnectionMode_TeamSpeak3">TeamSpeak 3 (ClientQuery TCP Port 25639)</sys:String>
     <sys:String x:Key="Enum_TeamSpeakConnectionMode_TeamSpeak6">TeamSpeak 6 (Remote API WebSocket Port 5899)</sys:String>
+    <!-- System Tray Menu -->
+    <sys:String x:Key="Tray_OpenSettings">⚙️ Settings</sys:String>
+    <sys:String x:Key="Tray_CheckForUpdates">🚀 Check for Updates</sys:String>
+    <sys:String x:Key="Tray_ViewLog">📜 View Log File</sys:String>
+    <sys:String x:Key="Tray_Exit">❌ Exit</sys:String>
 </ResourceDictionary>
