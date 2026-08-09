@@ -31,6 +31,15 @@ namespace TeamSpeakOverlay.Infrastructure.Update
                 if (!response.IsSuccessStatusCode)
                 {
                     Logger.Warn($"GitHub API returned status {response.StatusCode}", "AutoUpdateService");
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        // 404 Not Found means no published releases exist on GitHub yet
+                        return new GitHubReleaseInfo
+                        {
+                            TagName = AppVersion.DisplayVersion,
+                            IsNewerThanCurrent = false
+                        };
+                    }
                     return null;
                 }
 
