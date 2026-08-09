@@ -14,6 +14,7 @@ namespace TeamSpeakOverlay.Infrastructure.Win32
         private readonly NotifyIcon _notifyIcon;
         private readonly ToolStripMenuItem _statusMenuItem;
         private readonly ToolStripMenuItem _settingsItem;
+        private readonly ToolStripMenuItem _checkForUpdatesItem;
         private readonly ToolStripMenuItem _openLogItem;
         private readonly ToolStripMenuItem _exitItem;
         private readonly Icon _customIcon;
@@ -22,7 +23,8 @@ namespace TeamSpeakOverlay.Infrastructure.Win32
 
         public SystemTrayManager(
             Action onExitAction, 
-            Action onOpenSettingsAction)
+            Action onOpenSettingsAction,
+            Action? onCheckForUpdatesAction = null)
         {
             _onExitAction = onExitAction;
             _customIcon = CreateMaterial3TrayIcon();
@@ -49,6 +51,41 @@ namespace TeamSpeakOverlay.Infrastructure.Win32
             _settingsItem = new ToolStripMenuItem("Open Settings");
             _settingsItem.Click += (s, e) => onOpenSettingsAction?.Invoke();
             contextMenu.Items.Add(_settingsItem);
+
+            // Check for Updates Menu Item
+            _checkForUpdatesItem = new ToolStripMenuItem("Check for Updates", null, async (s, e) =>
+            {
+                Logger.Info("User clicked 'Check for Updates' in System Tray menu", "TrayManager");
+                if (onCheckForUpdatesAction != null)
+                {
+                    onCheckForUpdatesAction.Invoke();
+                }
+                else
+                {
+                    try
+                    {
+                        var updateUseCase = new Application.UseCases.CheckForUpdatesUseCase();
+                        var release = await updateUseCase.ExecuteCheckAsync();
+                        if (release != null && release.IsNewerThanCurrent)
+                        {
+                            _notifyIcon.ShowBalloonTip(5000, "TeamSpeak Overlay", $"Доступна новая версия {release.TagName}! Нажмите для загрузки.", ToolTipIcon.Info);
+                            if (!string.IsNullOrEmpty(release.SetupAssetUrl))
+                            {
+                                await updateUseCase.ExecuteDownloadAndUpdateAsync(release.SetupAssetUrl);
+                            }
+                        }
+                        else
+                        {
+                            _notifyIcon.ShowBalloonTip(3000, "TeamSpeak Overlay", "У вас установлена последняя версия.", ToolTipIcon.Info);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error("Error checking updates from tray menu", ex, "TrayManager");
+                    }
+                }
+            });
+            contextMenu.Items.Add(_checkForUpdatesItem);
 
             contextMenu.Items.Add(new ToolStripSeparator());
 
@@ -149,6 +186,9 @@ namespace TeamSpeakOverlay.Infrastructure.Win32
                 {
                     if (_settingsItem != null)
                         _settingsItem.Text = app.TryFindResource("Tray_OpenSettings") as string ?? "Open Settings";
+
+                    if (_checkForUpdatesItem != null)
+                        _checkForUpdatesItem.Text = app.TryFindResource("Tray_CheckForUpdates") as string ?? "Check for Updates";
 
                     if (_openLogItem != null)
                         _openLogItem.Text = app.TryFindResource("Tray_ViewLog") as string ?? "View Log File";

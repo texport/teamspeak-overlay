@@ -183,4 +183,9 @@
     <sys:String x:Key="Enum_TeamSpeakConnectionMode_Auto">Автоматический выбор (TS3 &amp; TS6 Dual-Scan)</sys:String>
     <sys:String x:Key="Enum_TeamSpeakConnectionMode_TeamSpeak3">TeamSpeak 3 (ClientQuery TCP порт 25639)</sys:String>
     <sys:String x:Key="Enum_TeamSpeakConnectionMode_TeamSpeak6">TeamSpeak 6 (Remote API WebSocket порт 5899)</sys:String>
+    <!-- System Tray Menu -->
+    <sys:String x:Key="Tray_OpenSettings">⚙️ Настройки</sys:String>
+    <sys:String x:Key="Tray_CheckForUpdates">🚀 Проверить обновления</sys:String>
+    <sys:String x:Key="Tray_ViewLog">📜 Просмотр лог-файла</sys:String>
+    <sys:String x:Key="Tray_Exit">❌ Выход</sys:String>
 </ResourceDictionary>
