@@ -18,12 +18,33 @@ namespace TeamSpeakOverlay.ViewModels
         private Action _onCloseCallback;
         private Action? _onApplyImmediate;
 
+        private readonly CheckForUpdatesUseCase _checkForUpdatesUseCase;
+        private readonly ExportLogsUseCase _exportLogsUseCase;
+
+        private string _updateStatusText = "Проверка не выполнялась";
+        private bool _isCheckingForUpdates;
+        private bool _isUpdateAvailable;
+        private GitHubReleaseInfo? _latestRelease;
+
+        public ICommand CheckForUpdatesCommand { get; }
+        public ICommand DownloadUpdateCommand { get; }
+        public ICommand OpenLogFolderCommand { get; }
+        public ICommand CopyLogCommand { get; }
+
         public SettingsViewModel(AppSettings settings, Action onSaveCallback, Action onCloseCallback, Action? onApplyImmediate = null)
         {
             _settings = settings;
             _onSaveCallback = onSaveCallback;
             _onCloseCallback = onCloseCallback;
             _onApplyImmediate = onApplyImmediate;
+
+            _checkForUpdatesUseCase = new CheckForUpdatesUseCase();
+            _exportLogsUseCase = new ExportLogsUseCase();
+
+            CheckForUpdatesCommand = new RelayCommand(async _ => await CheckForUpdatesAsync());
+            DownloadUpdateCommand = new RelayCommand(async _ => await DownloadUpdateAsync(), _ => _isUpdateAvailable && !string.IsNullOrEmpty(_latestRelease?.SetupAssetUrl));
+            OpenLogFolderCommand = new RelayCommand(_ => _exportLogsUseCase.OpenLogFolder());
+            CopyLogCommand = new RelayCommand(_ => _exportLogsUseCase.CopyLogToClipboard());
 
             // Load settings into ViewModel properties
             _overlayOpacity = _settings.OverlayOpacity;
@@ -743,6 +764,78 @@ namespace TeamSpeakOverlay.ViewModels
             if (!string.IsNullOrEmpty(SelectedProcess))
             {
                 TargetProcesses.Remove(SelectedProcess);
+            }
+        }
+
+        public string UpdateStatusText
+        {
+            get => _updateStatusText;
+            set { _updateStatusText = value; OnPropertyChanged(); }
+        }
+
+        public bool IsCheckingForUpdates
+        {
+            get => _isCheckingForUpdates;
+            set { _isCheckingForUpdates = value; OnPropertyChanged(); }
+        }
+
+        public bool IsUpdateAvailable
+        {
+            get => _isUpdateAvailable;
+            set { _isUpdateAvailable = value; OnPropertyChanged(); }
+        }
+
+        private async System.Threading.Tasks.Task CheckForUpdatesAsync()
+        {
+            IsCheckingForUpdates = true;
+            UpdateStatusText = "Проверка обновлений на GitHub...";
+            try
+            {
+                var release = await _checkForUpdatesUseCase.ExecuteCheckAsync();
+                _latestRelease = release;
+
+                if (release == null)
+                {
+                    UpdateStatusText = "Не удалось связаться с сервером GitHub.";
+                    IsUpdateAvailable = false;
+                }
+                else if (release.IsNewerThanCurrent)
+                {
+                    UpdateStatusText = $"Доступна новая версия {release.TagName}!";
+                    IsUpdateAvailable = true;
+                }
+                else
+                {
+                    UpdateStatusText = "У вас установлена последняя версия.";
+                    IsUpdateAvailable = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error checking updates in ViewModel", ex, "SettingsViewModel");
+                UpdateStatusText = "Ошибка при проверке обновлений.";
+                IsUpdateAvailable = false;
+            }
+            finally
+            {
+                IsCheckingForUpdates = false;
+            }
+        }
+
+        private async System.Threading.Tasks.Task DownloadUpdateAsync()
+        {
+            if (_latestRelease == null || string.IsNullOrEmpty(_latestRelease.SetupAssetUrl)) return;
+
+            UpdateStatusText = "Загрузка инсталлятора обновления...";
+            bool success = await _checkForUpdatesUseCase.ExecuteDownloadAndUpdateAsync(_latestRelease.SetupAssetUrl);
+            if (success)
+            {
+                UpdateStatusText = "Инсталлятор запущен! Завершение приложения...";
+                _onCloseCallback?.Invoke();
+            }
+            else
+            {
+                UpdateStatusText = "Не удалось скачать обновление.";
             }
         }
 

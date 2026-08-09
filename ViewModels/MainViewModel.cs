@@ -663,6 +663,27 @@ namespace TeamSpeakOverlay.ViewModels
             // Wire Game Tracker events
             _observeGameUseCase.GameWindowStateChanged += OnGameWindowStateChanged;
             _observeGameUseCase.Execute();
+
+            // Background update check on startup
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                try
+                {
+                    var checkUseCase = new CheckForUpdatesUseCase();
+                    var release = await checkUseCase.ExecuteCheckAsync();
+                    if (release != null && release.IsNewerThanCurrent)
+                    {
+                        _dispatcher.Invoke(() =>
+                        {
+                            AddToast("Доступно обновление!", $"Версия {release.TagName} доступна для скачивания в настройках.", "Update");
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn($"Startup update check exception: {ex.Message}", "MainViewModel");
+                }
+            });
         }
 
         private void OnTSPokeReceived(object? sender, PokeEventArgs e)

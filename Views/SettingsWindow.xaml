@@ -384,6 +384,23 @@
 
                         <ListBox ItemsSource="{Binding TargetProcesses}" SelectedItem="{Binding SelectedProcess}" ToolTip="{DynamicResource ToolTip_TargetProcesses}"/>
                         <Button Content="{DynamicResource Btn_Remove}" Command="{Binding RemoveProcessCommand}" Style="{DynamicResource MaterialButtonError}"/>
+
+                        <!-- Diagnostics & Logs -->
+                        <TextBlock Text="Диагностика и Логи" Style="{DynamicResource MaterialSectionHeader}"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,8">
+                            <Button Content="📂 Открыть папку с логами" Command="{Binding OpenLogFolderCommand}" Margin="0,0,8,0" Style="{DynamicResource MaterialButtonOutlined}"/>
+                            <Button Content="📋 Скопировать лог-файл" Command="{Binding CopyLogCommand}" Style="{DynamicResource MaterialButtonOutlined}"/>
+                        </StackPanel>
+
+                        <!-- Auto-Updates -->
+                        <TextBlock Text="Обновление программы" Style="{DynamicResource MaterialSectionHeader}"/>
+                        <StackPanel Orientation="Vertical" Margin="0,4,0,8">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <Button Content="🔍 Проверить обновления" Command="{Binding CheckForUpdatesCommand}" Margin="0,0,8,0"/>
+                                <Button Content="🚀 Установить обновление" Command="{Binding DownloadUpdateCommand}" Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVisConverter}}"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding UpdateStatusText}" Style="{DynamicResource MaterialBody}" Foreground="#A0FFFFFF" TextWrapping="Wrap"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 

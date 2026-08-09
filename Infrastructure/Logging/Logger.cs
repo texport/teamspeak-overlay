@@ -22,7 +22,7 @@ namespace TeamSpeakOverlay.Infrastructure.Logging
             }
 
             AppDataLogPath = Path.Combine(appDataDir, "overlay.log");
-            LocalLogPath = @"c:\Users\ivano\OneDrive\Documents\develop\teamspeak-overlay\overlay.log";
+            LocalLogPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "overlay.log");
 
             Info("=================== LOGGING INITIALIZED ===================", "Logger");
         }

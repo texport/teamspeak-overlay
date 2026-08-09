@@ -1,0 +1,58 @@
+name: Build & Release TeamSpeak Overlay
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build Release
+        run: dotnet build -c Release --no-restore
+
+      - name: Publish Standalone Binary
+        run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+
+      - name: Setup Inno Setup Compiler
+        uses: choco-gh/setup-chocolatey@v3
+        with:
+          chocolatey-version: 'latest'
+
+      - name: Install Inno Setup via Choco
+        run: choco install innosetup -y
+
+      - name: Compile Setup Installer
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss
+
+      - name: Compress Portable ZIP Archive
+        run: |
+          Compress-Archive -Path 'bin/Release/net8.0-windows/win-x64/publish/*' -DestinationPath 'bin/Release/net8.0-windows/TeamSpeakOverlay-v1.1.0-Alpha.zip' -Force
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            bin/Release/net8.0-windows/TeamSpeakOverlay-v1.1.0-Alpha-Setup.exe
+            bin/Release/net8.0-windows/TeamSpeakOverlay-v1.1.0-Alpha.zip
+          prerelease: true
+          generate_release_notes: true
