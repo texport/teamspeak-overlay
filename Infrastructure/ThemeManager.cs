@@ -37,7 +37,7 @@ namespace TeamSpeakOverlay.Infrastructure
             string themeFileName = effectiveTheme == AppTheme.Light ? "Material3Light.xaml" : "Material3Dark.xaml";
             var newTheme = new ResourceDictionary
             {
-                Source = new Uri($"pack://application:,,,/TeamSpeakOverlay;component/Themes/{themeFileName}", UriKind.Absolute)
+                Source = new Uri($"pack://application:,,,/Themes/{themeFileName}", UriKind.Absolute)
             };
 
             app.Resources.MergedDictionaries.Add(newTheme);

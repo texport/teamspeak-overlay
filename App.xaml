@@ -7,9 +7,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- Initial theme & string dictionaries -->
-                <ResourceDictionary Source="pack://application:,,,/TeamSpeakOverlay;component/Themes/Material3Dark.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/TeamSpeakOverlay;component/Themes/Material3Styles.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/TeamSpeakOverlay;component/Themes/Strings.ru-RU.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Themes/Material3Dark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Themes/Material3Styles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/Themes/Strings.ru-RU.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

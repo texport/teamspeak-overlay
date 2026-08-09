@@ -23,7 +23,7 @@ namespace TeamSpeakOverlay.Infrastructure.Localization
                     _ => "Strings.ru-RU.xaml"
                 };
 
-                var packUri = new Uri($"pack://application:,,,/TeamSpeakOverlay;component/Themes/{fileName}", UriKind.Absolute);
+                var packUri = new Uri($"pack://application:,,,/Themes/{fileName}", UriKind.Absolute);
                 var newDict = new ResourceDictionary
                 {
                     Source = packUri
