@@ -1,0 +1,16 @@
+<Application x:Class="TeamSpeakOverlay.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TeamSpeakOverlay"
+             ShutdownMode="OnExplicitShutdown">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Initial theme & string dictionaries -->
+                <ResourceDictionary Source="pack://application:,,,/TeamSpeakOverlay;component/Themes/Material3Dark.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/TeamSpeakOverlay;component/Themes/Material3Styles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/TeamSpeakOverlay;component/Themes/Strings.ru-RU.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

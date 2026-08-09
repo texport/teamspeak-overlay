@@ -1,0 +1,406 @@
+<Window x:Class="TeamSpeakOverlay.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TeamSpeakOverlay.Views"
+        xmlns:models="clr-namespace:TeamSpeakOverlay.Domain.Entities"
+        xmlns:converters="clr-namespace:TeamSpeakOverlay.Infrastructure.Converters"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="TeamSpeak Overlay Settings" SizeToContent="WidthAndHeight" MaxHeight="800" MinWidth="450" MaxWidth="600"
+        WindowStartupLocation="CenterScreen"
+        ToolTipService.InitialShowDelay="0"
+        ToolTipService.BetweenShowDelay="0"
+        ToolTipService.ShowDuration="30000"
+        ToolTipService.ShowOnDisabled="True"
+        Style="{DynamicResource MaterialWindowStyle}">
+    
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <converters:EnumToLocalizedDescriptionConverter x:Key="EnumToLocalizedConverter"/>
+        <ObjectDataProvider x:Key="OverlayPositionEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:OverlayPosition"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="OverlayDisplayModeEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:OverlayDisplayMode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="OverlaySortOrderEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:OverlaySortOrder"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="OverlayCardStyleEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:OverlayCardStyle"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="SpeechAccentColorEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:SpeechAccentColor"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="NicknameTextColorEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:NicknameTextColor"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="WhisperAccentColorEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:WhisperAccentColor"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="VisualPresetEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:VisualPreset"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="AppThemeEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:AppTheme"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="AppLanguageEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:AppLanguage"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="TeamSpeakConnectionModeEnum" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:TeamSpeakConnectionMode"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Style="{DynamicResource MaterialHeaderBorder}">
+            <Grid>
+                <TextBlock Text="{DynamicResource Title_SettingsWindow}" Style="{DynamicResource MaterialHeadline}"/>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" Style="{DynamicResource MaterialMainScrollViewer}">
+            <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+
+                <!-- Author & Overlay Branding Card (Very Top) -->
+                <Border Style="{DynamicResource MaterialCard}" BorderBrush="#3500E5FF" BorderThickness="1">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Section_Author}" Style="{DynamicResource MaterialTitle}" Foreground="#FF00E5FF"/>
+
+                        <Grid Margin="0,4,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="👨‍💻" FontSize="28" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="{DynamicResource Author_DevTitle}" Style="{DynamicResource MaterialBody}" Foreground="#B0FFFFFF"/>
+                                <TextBlock Text="{Binding AuthorTelegramHandle}" FontSize="16" FontWeight="Bold" Foreground="#FF00E5FF"/>
+                                <TextBlock Text="{DynamicResource Author_GameInfo}" FontSize="13" FontWeight="SemiBold" Foreground="#FF00E5FF" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="{DynamicResource Author_SupportNote}" TextWrapping="Wrap" Margin="0,0,0,10" Style="{DynamicResource MaterialBody}" Foreground="#E0FFFFFF"/>
+
+                        <Button Content="{DynamicResource Author_OpenTelegram}" Command="{Binding OpenTelegramCommand}" Style="{DynamicResource MaterialButtonAdd}" Background="#2500E5FF" BorderBrush="#FF00E5FF" Foreground="#FF00E5FF" HorizontalAlignment="Left" Margin="0,0,0,10"/>
+
+                        <CheckBox Content="{DynamicResource Option_AuthorBranding}" IsChecked="{Binding ShowAuthorBranding}" ToolTip="{DynamicResource ToolTip_AuthorBranding}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Language Card -->
+                <Border Style="{DynamicResource MaterialCard}">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Option_Language}" Style="{DynamicResource MaterialTitle}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource AppLanguageEnum}}" SelectedItem="{Binding Language}" ToolTip="{DynamicResource ToolTip_Language}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- 1-Click Gaming Presets Card -->
+                <Border Style="{DynamicResource MaterialCard}">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Section_Presets}" Style="{DynamicResource MaterialTitle}"/>
+                        <TextBlock Text="{DynamicResource Option_PresetsBody}" Style="{DynamicResource MaterialBody}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource VisualPresetEnum}}" SelectedItem="{Binding CurrentPreset}" ToolTip="{DynamicResource ToolTip_Presets}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- Hotkeys & Widgets Card -->
+                <Border Style="{DynamicResource MaterialCard}">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Section_ProGaming}" Style="{DynamicResource MaterialTitle}"/>
+
+                        <CheckBox Content="{DynamicResource Option_Hotkeys}" IsChecked="{Binding EnableHotkeys}" ToolTip="{DynamicResource ToolTip_Hotkeys}"/>
+                        <CheckBox Content="{DynamicResource Option_ShowClock}" IsChecked="{Binding ShowClockInHeader}" ToolTip="{DynamicResource ToolTip_Clock}"/>
+                        
+                        <StackPanel Visibility="{Binding ShowClockInHeader, Converter={StaticResource BoolToVisConverter}}">
+                            <TextBlock Text="{DynamicResource Option_TimeFormat}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_TimeFormat}"/>
+                            <ComboBox ItemsSource="{Binding TimeFormatValues}" SelectedItem="{Binding TimeFormat}" ToolTip="{DynamicResource ToolTip_TimeFormat}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <CheckBox Content="{DynamicResource Option_UseGameCharacterName}" IsChecked="{Binding UseGameCharacterName}" ToolTip="{DynamicResource ToolTip_UseGameCharacterName}"/>
+
+                        <CheckBox Content="{DynamicResource Option_Toasts}" IsChecked="{Binding EnablePokeNotifications}" ToolTip="{DynamicResource ToolTip_Toasts}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Advanced Features & Sound FX Card -->
+                <Border Style="{DynamicResource MaterialCard}">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Section_Advanced}" Style="{DynamicResource MaterialTitle}"/>
+
+                        <CheckBox Content="{DynamicResource Option_SoundNotifications}" IsChecked="{Binding EnableSoundNotifications}" ToolTip="{DynamicResource ToolTip_SoundNotifications}"/>
+                        <CheckBox Content="{DynamicResource Option_ClickThrough}" IsChecked="{Binding EnableClickThrough}" ToolTip="{DynamicResource ToolTip_ClickThrough}"/>
+                        <CheckBox Content="{DynamicResource Option_AlwaysShowOnTop}" IsChecked="{Binding AlwaysShowOnTop}" ToolTip="{DynamicResource ToolTip_AlwaysShowOnTop}"/>
+                        <CheckBox Content="{DynamicResource Option_VoiceEqualizer}" IsChecked="{Binding EnableVoiceEqualizerAnimation}" ToolTip="{DynamicResource ToolTip_VoiceEqualizer}"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Positioning & Size Card -->
+                <Border Style="{DynamicResource MaterialCard}">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Section_Positioning}" Style="{DynamicResource MaterialTitle}"/>
+                        
+                        <TextBlock Text="{DynamicResource Option_Position}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_Position}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource OverlayPositionEnum}}" SelectedItem="{Binding Position}" ToolTip="{DynamicResource ToolTip_Position}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Option_Scale}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_Scale}"/>
+                        <Grid Style="{DynamicResource MaterialRowGrid}" ToolTip="{DynamicResource ToolTip_Scale}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Minimum="0.5" Maximum="2.0" Value="{Binding OverlayScale}" TickFrequency="0.05" IsSnapToTickEnabled="True" ToolTip="{DynamicResource ToolTip_Scale}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding OverlayScale, StringFormat=P0}" Style="{DynamicResource MaterialBody}"/>
+                        </Grid>
+
+                        <TextBlock Text="{DynamicResource Option_Width}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_Width}"/>
+                        <Grid Style="{DynamicResource MaterialRowGrid}" ToolTip="{DynamicResource ToolTip_Width}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Minimum="200" Maximum="450" Value="{Binding OverlayWidth}" TickFrequency="10" IsSnapToTickEnabled="True" ToolTip="{DynamicResource ToolTip_Width}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding OverlayWidth, StringFormat={}{0:F0} px}" Style="{DynamicResource MaterialBody}"/>
+                        </Grid>
+
+                        <TextBlock Text="{DynamicResource Option_MarginX}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_MarginX}"/>
+                        <Grid Style="{DynamicResource MaterialRowGrid}" ToolTip="{DynamicResource ToolTip_MarginX}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Minimum="0" Maximum="300" Value="{Binding MarginX}" TickFrequency="5" IsSnapToTickEnabled="True" ToolTip="{DynamicResource ToolTip_MarginX}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding MarginX, StringFormat={}{0} px}" Style="{DynamicResource MaterialBody}"/>
+                        </Grid>
+
+                        <TextBlock Text="{DynamicResource Option_MarginY}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_MarginY}"/>
+                        <Grid Style="{DynamicResource MaterialRowGrid}" ToolTip="{DynamicResource ToolTip_MarginY}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Minimum="0" Maximum="300" Value="{Binding MarginY}" TickFrequency="5" IsSnapToTickEnabled="True" ToolTip="{DynamicResource ToolTip_MarginY}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding MarginY, StringFormat={}{0} px}" Style="{DynamicResource MaterialBody}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Filter Rules & Member List Card -->
+                <Border Style="{DynamicResource MaterialCard}">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Section_Filtering}" Style="{DynamicResource MaterialTitle}"/>
+
+                        <TextBlock Text="{DynamicResource Option_DisplayMode}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_DisplayMode}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource OverlayDisplayModeEnum}}" SelectedItem="{Binding DisplayMode}" ToolTip="{DynamicResource ToolTip_DisplayMode}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Option_SortOrder}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_SortOrder}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource OverlaySortOrderEnum}}" SelectedItem="{Binding SortOrder}" ToolTip="{DynamicResource ToolTip_SortOrder}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Option_MaxClients}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_MaxClients}"/>
+                        <Grid Style="{DynamicResource MaterialRowGrid}" ToolTip="{DynamicResource ToolTip_MaxClients}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Minimum="0" Maximum="20" Value="{Binding MaxVisibleClients}" TickFrequency="1" IsSnapToTickEnabled="True" ToolTip="{DynamicResource ToolTip_MaxClients}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding MaxVisibleClientsDescription}" FontWeight="SemiBold" Foreground="#FF00E5FF" Style="{DynamicResource MaterialBody}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Aesthetics & Visual Style Card -->
+                <Border Style="{DynamicResource MaterialCard}">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Section_Aesthetics}" Style="{DynamicResource MaterialTitle}"/>
+
+                        <TextBlock Text="{DynamicResource Option_Theme}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_Language}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource AppThemeEnum}}" SelectedItem="{Binding Theme}" ToolTip="{DynamicResource ToolTip_Language}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Option_SurfaceStyle}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_CardStyle}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource OverlayCardStyleEnum}}" SelectedItem="{Binding CardStyle}" ToolTip="{DynamicResource ToolTip_CardStyle}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Option_Opacity}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_Opacity}"/>
+                        <Grid Style="{DynamicResource MaterialRowGrid}" ToolTip="{DynamicResource ToolTip_Opacity}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Minimum="0.1" Maximum="1.0" Value="{Binding OverlayOpacity}" TickFrequency="0.05" IsSnapToTickEnabled="True" ToolTip="{DynamicResource ToolTip_Opacity}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding OverlayOpacity, StringFormat=P0}" Style="{DynamicResource MaterialBody}"/>
+                        </Grid>
+
+                        <CheckBox Content="{DynamicResource Option_HeaderShow}" IsChecked="{Binding ShowHeader}" ToolTip="{DynamicResource ToolTip_ShowHeader}"/>
+
+                        <TextBlock Text="{DynamicResource Option_AccentColor}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_TalkingAccent}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource SpeechAccentColorEnum}}" SelectedItem="{Binding TalkingAccentColor}" ToolTip="{DynamicResource ToolTip_TalkingAccent}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Settings_NicknameColor}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource Settings_NicknameColor}"/>
+                        <ComboBox ItemsSource="{Binding NicknameColorValues}" SelectedItem="{Binding NicknameColor}" ToolTip="{DynamicResource Settings_NicknameColor}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Option_SpeakingNickMode}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_SpeakingNickMode}"/>
+                        <ComboBox ItemsSource="{Binding SpeakingNickModeValues}" SelectedItem="{Binding SpeakingNickMode}" ToolTip="{DynamicResource ToolTip_SpeakingNickMode}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Option_WhisperAccentColor}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_WhisperAccent}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource WhisperAccentColorEnum}}" SelectedItem="{Binding WhisperAccentColor}" ToolTip="{DynamicResource ToolTip_WhisperAccent}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <!-- Connection & Processes Card -->
+                <Border Style="{DynamicResource MaterialCard}">
+                    <StackPanel Style="{DynamicResource MaterialCardStackPanel}">
+                        <TextBlock Text="{DynamicResource Section_Connection}" Style="{DynamicResource MaterialTitle}"/>
+
+                        <TextBlock Text="{DynamicResource Option_TeamSpeakMode}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource ToolTip_TeamSpeakMode}"/>
+                        <ComboBox ItemsSource="{Binding Source={StaticResource TeamSpeakConnectionModeEnum}}" SelectedItem="{Binding TeamSpeakMode}" ToolTip="{DynamicResource ToolTip_TeamSpeakMode}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource EnumToLocalizedConverter}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Text="{DynamicResource Option_TS3ApiKey}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource Option_TS3ApiKey}"/>
+                        <TextBox Text="{Binding TS3ApiKey, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock Text="{DynamicResource Option_TS6ApiKey}" Style="{DynamicResource MaterialBody}" ToolTip="{DynamicResource Option_TS6ApiKey}"/>
+                        <TextBox Text="{Binding TS6ApiKey, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <CheckBox Content="{DynamicResource Option_Autostart}" IsChecked="{Binding AutostartWithWindows}" ToolTip="{DynamicResource ToolTip_TargetProcesses}"/>
+
+                        <TextBlock Text="{DynamicResource Option_TargetProcesses}" Style="{DynamicResource MaterialBodyLarge}" ToolTip="{DynamicResource ToolTip_TargetProcesses}"/>
+                        <Grid Style="{DynamicResource MaterialRowGrid}" ToolTip="{DynamicResource ToolTip_TargetProcesses}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{Binding NewProcessName, UpdateSourceTrigger=PropertyChanged}" Style="{DynamicResource MaterialTextBoxInline}"/>
+                            <Button Grid.Column="1" Content="{DynamicResource Btn_Add}" Command="{Binding AddProcessCommand}" Style="{DynamicResource MaterialButtonAdd}"/>
+                        </Grid>
+
+                        <ListBox ItemsSource="{Binding TargetProcesses}" SelectedItem="{Binding SelectedProcess}" ToolTip="{DynamicResource ToolTip_TargetProcesses}"/>
+                        <Button Content="{DynamicResource Btn_Remove}" Command="{Binding RemoveProcessCommand}" Style="{DynamicResource MaterialButtonError}"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <Border Grid.Row="2" Style="{DynamicResource MaterialFooterBorder}">
+            <Grid>
+                <TextBlock Text="{Binding AppVersionDisplay}" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="11" Foreground="#80FFFFFF"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="{DynamicResource Btn_Cancel}" Command="{Binding CancelCommand}" Style="{DynamicResource MaterialButtonText}"/>
+                    <Button Content="{DynamicResource Btn_Save}" Command="{Binding SaveCommand}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
+

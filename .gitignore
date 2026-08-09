@@ -1,0 +1,29 @@
+## Build & Binary Outputs
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.zip
+*.7z
+
+## Visual Studio & IDE files
+.vs/
+*.user
+*.suo
+*.cache
+*.userosscache
+*.sln.docstates
+
+## Application Logs & Scratch Data
+*.log
+overlay.log
+crash.log
+run.log
+temp_auth.log
+coverage.xml
+TestResults/
+
+## Scratch & Temporary Test Files
+scratch/
+TestExtractApp/

@@ -1,0 +1,186 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Window Headers -->
+    <sys:String x:Key="Title_SettingsWindow">Визуальные Настройки Оверлея</sys:String>
+
+    <!-- Card Headers -->
+    <sys:String x:Key="Section_Presets">Быстрые профили стиля (Пресеты)</sys:String>
+    <sys:String x:Key="Section_ProGaming">Pro Игровые Хоткеи &amp; Виджеты</sys:String>
+    <sys:String x:Key="Section_Positioning">Позиция &amp; Размеры Экрана</sys:String>
+    <sys:String x:Key="Section_Filtering">Правила Списка &amp; Фильтрация</sys:String>
+    <sys:String x:Key="Section_Aesthetics">Эстетика &amp; Визуальный Стиль</sys:String>
+    <sys:String x:Key="Section_Connection">Подключение &amp; Целевые Игры</sys:String>
+    <sys:String x:Key="Section_Author">Об Авторе &amp; Брендинг Оверлея</sys:String>
+    <sys:String x:Key="Section_Advanced">Расширенные функции &amp; Звуковые эффекты</sys:String>
+
+    <!-- Option Titles -->
+    <sys:String x:Key="Option_PresetsBody">Быстрый выбор профиля (FPS Минималист, MMO Рейд, Стример Pro)</sys:String>
+    <sys:String x:Key="Option_Language">Язык интерфейса / Language</sys:String>
+    <sys:String x:Key="Option_Theme">Тема оформления приложения</sys:String>
+    <sys:String x:Key="Option_Hotkeys">Включить глобальные хоткеи (Ctrl+Shift+O / Ctrl+Shift+M)</sys:String>
+    <sys:String x:Key="Option_ShowClock">Показывать часы и время в шапке оверлея</sys:String>
+    <sys:String x:Key="Option_UseGameCharacterName">Отображать ник из окна Lineage II (вместо контактов)</sys:String>
+    <sys:String x:Key="Option_TimeFormat">Формат времени в шапке оверлея:</sys:String>
+    <sys:String x:Key="Enum_TimeDisplayFormat_Full24HourWithSeconds">24-часовой с секундами (14:10:59)</sys:String>
+    <sys:String x:Key="Enum_TimeDisplayFormat_Short24Hour">24-часовой без секунд (14:10)</sys:String>
+    <sys:String x:Key="Enum_TimeDisplayFormat_TwelveHour">12-часовой AM/PM (02:10 PM)</sys:String>
+    <sys:String x:Key="Enum_TimeDisplayFormat_TwelveHourWithSeconds">12-часовой с секундами AM/PM (02:10:59 PM)</sys:String>
+    <sys:String x:Key="Option_Toasts">Показывать всплывающие уведомления (Poke / Messages)</sys:String>
+    <sys:String x:Key="Option_SoundNotifications">Звуковые оповещения при Poke / сообщениях</sys:String>
+    <sys:String x:Key="Option_ClickThrough">Сквозной клик мыши в игре (Click-Through / Ghost Overlay)</sys:String>
+    <sys:String x:Key="Option_AlwaysShowOnTop">Показывать оверлей поверх всех окон (Всегда виден)</sys:String>
+    <sys:String x:Key="Option_VoiceEqualizer">Анимированный эквалайзер речи у говорящих игроков</sys:String>
+    <sys:String x:Key="Option_Position">Привязка к углу экрана</sys:String>
+    <sys:String x:Key="Option_Scale">Масштаб оверлея (UI Zoom)</sys:String>
+    <sys:String x:Key="Option_Width">Ширина карточки оверлея</sys:String>
+    <sys:String x:Key="Option_MarginX">Отступ по горизонтали (Margin X)</sys:String>
+    <sys:String x:Key="Option_MarginY">Отступ по вертикали (Margin Y)</sys:String>
+    <sys:String x:Key="Option_DisplayMode">Режим отображения (Все / Только говорящие)</sys:String>
+    <sys:String x:Key="Option_SortOrder">Порядок сортировки игроков</sys:String>
+    <sys:String x:Key="Option_MaxClients">Лимит видимых участников на экране</sys:String>
+    <sys:String x:Key="Option_SurfaceStyle">Стиль поверхности карточек</sys:String>
+    <sys:String x:Key="Option_Opacity">Прозрачность оверлея</sys:String>
+    <sys:String x:Key="Option_HeaderShow">Показывать шапку с названием комнаты</sys:String>
+    <sys:String x:Key="Option_AccentColor">Цвет подсветки говорящего (Обычный)</sys:String>
+    <sys:String x:Key="Option_WhisperAccentColor">Цвет подсветки Whisper / Глобального войса</sys:String>
+    <sys:String x:Key="Option_ApiKey">API Ключ TeamSpeak</sys:String>
+    <sys:String x:Key="Option_TeamSpeakMode">Режим подключения TeamSpeak (Автовыбор / TS3 / TS6)</sys:String>
+    <sys:String x:Key="Option_TS3ApiKey">API Ключ TeamSpeak 3 (ClientQuery)</sys:String>
+    <sys:String x:Key="Option_TS6ApiKey">API Ключ TeamSpeak 6 (Remote API)</sys:String>
+    <sys:String x:Key="Option_Autostart">Запускать вместе с Windows</sys:String>
+    <sys:String x:Key="Option_TargetProcesses">Процессы целевых игр (без .exe)</sys:String>
+    <sys:String x:Key="Option_AuthorBranding">Показывать ник Telegram в шапке оверлея</sys:String>
+    <sys:String x:Key="Option_AuthorHandle">Никнейм автора / Telegram Handle</sys:String>
+    <sys:String x:Key="Author_DevTitle">Разработчик оверлея:</sys:String>
+    <sys:String x:Key="Author_GameInfo">🎮 Сервер Gamma — ник: Nastavnik</sys:String>
+    <sys:String x:Key="Author_SupportNote">💡 Играю на сервере Gamma (ник персонажа: Nastavnik). Если хотите поддержать разработчика (аденой, колами или отзывом) — пишите в Telegram или прямо в игре!</sys:String>
+    <sys:String x:Key="Author_OpenTelegram">Написать в Telegram / Поддержать</sys:String>
+
+    <!-- Formatted Slider Descriptions -->
+    <sys:String x:Key="MaxClients_Unlimited">0 — Показывать всех (без ограничений)</sys:String>
+    <sys:String x:Key="MaxClients_Limited">{0} участников (максимум)</sys:String>
+
+    <!-- Buttons -->
+    <sys:String x:Key="Btn_Add">Добавить</sys:String>
+    <sys:String x:Key="Btn_Remove">Удалить выбранное</sys:String>
+    <sys:String x:Key="Btn_Cancel">Отмена</sys:String>
+    <sys:String x:Key="Btn_Save">Сохранить настройки</sys:String>
+
+    <!-- Statuses & Tray -->
+    <sys:String x:Key="Status_Searching">Поиск TS3 / TS6...</sys:String>
+    <sys:String x:Key="Status_Connected">Подключено</sys:String>
+    <sys:String x:Key="Overlay_Standby">🎙️ TeamSpeak — Ожидание речи</sys:String>
+    <sys:String x:Key="Tray_OpenSettings">Открыть настройки</sys:String>
+    <sys:String x:Key="Tray_ViewLog">Просмотреть лог-файл</sys:String>
+    <sys:String x:Key="Tray_Exit">Выход</sys:String>
+
+    <!-- ToolTips & Badges -->
+    <sys:String x:Key="Author_Prefix">Автор: </sys:String>
+    <sys:String x:Key="ToolTip_MicMuted">Микрофон выключен в TeamSpeak</sys:String>
+    <sys:String x:Key="ToolTip_SoundDeafened">Звук выключен в TeamSpeak</sys:String>
+    <sys:String x:Key="ToolTip_Language">Выберите язык интерфейса приложения (Русский, English, Українська)</sys:String>
+    <sys:String x:Key="ToolTip_Presets">Готовые профили настроек: FPS Минималист (без рамок), MMO / L2 Рейд (полный стек), Стример Pro</sys:String>
+    <sys:String x:Key="ToolTip_Hotkeys">Включает глобальные хоткеи Ctrl+Shift+O (скрыть/показать оверлей) и Ctrl+Shift+M (быстрый мут)</sys:String>
+    <sys:String x:Key="ToolTip_Clock">Показывает точное время в верхней шапке оверлея над списком соклановцев</sys:String>
+    <sys:String x:Key="ToolTip_TimeFormat">Выбор формата отображения часов: 24-часовой с секундами (14:10:59), 24-часовой (14:10) или 12-часовой AM/PM</sys:String>
+    <sys:String x:Key="ToolTip_Toasts">Всплывающие игровые плашки при поках (Poke) или личных сообщениях от соклановцев</sys:String>
+    <sys:String x:Key="ToolTip_SoundNotifications">Воспроизводить звуковые сигналы при получении Poke или входящих вызовов</sys:String>
+    <sys:String x:Key="ToolTip_ClickThrough">Сквозной клик мыши: клики мышкой пролетают сквозь оверлей прямо в окно Lineage II / игру. Чтобы передвигать оверлей — выключите эту опцию</sys:String>
+    <sys:String x:Key="ToolTip_AlwaysShowOnTop">Оверлей будет отображаться поверх всех окон даже на рабочем столе вне игры</sys:String>
+    <sys:String x:Key="ToolTip_VoiceEqualizer">Анимированная звуковая волна (эквалайзер) возле никнейма говорящего соклановца</sys:String>
+    <sys:String x:Key="ToolTip_Position">Прив'язка оверлея к углу экрана или свободное перетаскивание мышью (Custom Drag)</sys:String>
+    <sys:String x:Key="ToolTip_Scale">Масштаб интерфейса оверлея (от 0.7x до 1.5x) для удобного чтения на разных мониторах</sys:String>
+    <sys:String x:Key="ToolTip_Width">Ширина плашки оверлея в пикселях. Меняется наглядно в реальном времени</sys:String>
+    <sys:String x:Key="ToolTip_MarginX">Отступ от левого или правого края экрана в пикселях</sys:String>
+    <sys:String x:Key="ToolTip_MarginY">Отступ от верхнего или нижнего края экрана в пикселях</sys:String>
+    <sys:String x:Key="ToolTip_DisplayMode">Показывать всех участников в канале или только тех, кто говорит прямо сейчас</sys:String>
+    <sys:String x:Key="ToolTip_SortOrder">Сортировка списка: по алфавиту или поднимать говорящих наверх</sys:String>
+    <sys:String x:Key="ToolTip_MaxClients">Ограничение количества отображаемых никнеймов на экране (0 = без ограничений)</sys:String>
+    <sys:String x:Key="ToolTip_CardStyle">Внешнее оформление: Современное стекло (Glassmorphism), Матовый Solid или Без рамок</sys:String>
+    <sys:String x:Key="ToolTip_Opacity">Прозрачность оверлея (от 10% до 100%)</sys:String>
+    <sys:String x:Key="ToolTip_ShowHeader">Показывать верхнюю плашку с названием канала и часами</sys:String>
+    <sys:String x:Key="ToolTip_TalkingAccent">Цвет подсветки ника и эквалайзера при обычном разговоре в TeamSpeak</sys:String>
+    <sys:String x:Key="ToolTip_WhisperAccent">Особый цвет подсветки для Whisper (шепот/глобальный голосовой вызов)</sys:String>
+    <sys:String x:Key="ToolTip_TeamSpeakMode">Режим подключения: Автовыбор, TeamSpeak 3 (ClientQuery) или TeamSpeak 6 (Remote API)</sys:String>
+    <sys:String x:Key="ToolTip_TargetProcesses">Список процессов игр (без .exe), при активном окне которых появляется оверлей (например: lu4, l2)</sys:String>
+    <sys:String x:Key="ToolTip_AuthorBranding">Отображать ник автора в шапке оверлея</sys:String>
+    <sys:String x:Key="ToolTip_UseGameCharacterName">Автоматически извлекает ник вашего персонажа из заголовка окна Lineage II и отображает его в шапке оверлея вместо контактов разработчика.</sys:String>
+
+    <!-- Enum Values: AppLanguage -->
+    <sys:String x:Key="Enum_AppLanguage_English">English (Английский)</sys:String>
+    <sys:String x:Key="Enum_AppLanguage_Russian">Русский</sys:String>
+    <sys:String x:Key="Enum_AppLanguage_Ukrainian">Українська (Украинский)</sys:String>
+
+    <!-- Enum Values: AppTheme -->
+    <sys:String x:Key="Enum_AppTheme_Dark">Тёмная тема (Dark)</sys:String>
+    <sys:String x:Key="Enum_AppTheme_Light">Светлая тема (Light)</sys:String>
+
+    <!-- Enum Values: VisualPreset -->
+    <sys:String x:Key="Enum_VisualPreset_Custom">Пользовательский</sys:String>
+    <sys:String x:Key="Enum_VisualPreset_FpsMinimalist">FPS Минималист</sys:String>
+    <sys:String x:Key="Enum_VisualPreset_MmoRaid">MMO / L2 Рейд</sys:String>
+    <sys:String x:Key="Enum_VisualPreset_StreamerPro">Стример Pro</sys:String>
+
+    <!-- Enum Values: OverlayPosition -->
+    <sys:String x:Key="Enum_OverlayPosition_TopLeft">Верхний левый угол</sys:String>
+    <sys:String x:Key="Enum_OverlayPosition_TopRight">Верхний правый угол</sys:String>
+    <sys:String x:Key="Enum_OverlayPosition_BottomLeft">Нижний левый угол</sys:String>
+    <sys:String x:Key="Enum_OverlayPosition_BottomRight">Нижний правый угол</sys:String>
+    <sys:String x:Key="Enum_OverlayPosition_CenterLeft">Центр слева</sys:String>
+    <sys:String x:Key="Enum_OverlayPosition_CenterRight">Центр справа</sys:String>
+    <sys:String x:Key="Enum_OverlayPosition_Custom">Свободный драг (Custom)</sys:String>
+
+    <!-- Enum Values: OverlayDisplayMode -->
+    <sys:String x:Key="Enum_OverlayDisplayMode_ShowAll">Показывать всех участников</sys:String>
+    <sys:String x:Key="Enum_OverlayDisplayMode_OnlySpeaking">Только говорящие игроки</sys:String>
+
+    <!-- Enum Values: OverlaySortOrder -->
+    <sys:String x:Key="Enum_OverlaySortOrder_Alphabetical">По алфавиту</sys:String>
+    <sys:String x:Key="Enum_OverlaySortOrder_SpeakersFirst">Сначала говорящие</sys:String>
+
+    <!-- Enum Values: OverlayCardStyle -->
+    <sys:String x:Key="Enum_OverlayCardStyle_ModernGlass">Современное стекло (Glassmorphism)</sys:String>
+    <sys:String x:Key="Enum_OverlayCardStyle_Solid">Сплошной матовый (Solid)</sys:String>
+    <sys:String x:Key="Enum_OverlayCardStyle_MinimalBorderless">Минималист (Без рамок)</sys:String>
+
+    <!-- Enum Values: SpeechAccentColor -->
+    <sys:String x:Key="Enum_SpeechAccentColor_NeonGreen">Неоновый зеленый</sys:String>
+    <sys:String x:Key="Enum_SpeechAccentColor_CyanBlue">Небесно-голубой</sys:String>
+    <sys:String x:Key="Enum_SpeechAccentColor_GoldYellow">Золотой желтый</sys:String>
+    <sys:String x:Key="Enum_SpeechAccentColor_HotPink">Ярко-розовый</sys:String>
+    <sys:String x:Key="Enum_SpeechAccentColor_Purple">Фиолетовый</sys:String>
+    <sys:String x:Key="Enum_SpeechAccentColor_ElectricOrange">Электрик Оранжевый</sys:String>
+    <sys:String x:Key="Enum_SpeechAccentColor_LimeYellow">Лимонно-Салатовый</sys:String>
+    <sys:String x:Key="Enum_SpeechAccentColor_DeepSkyBlue">Глубокий Синий</sys:String>
+    <sys:String x:Key="Enum_SpeechAccentColor_WhiteGlow">Яркий Белый Глянец</sys:String>
+
+    <sys:String x:Key="Option_SpeakingNickMode">Режим цвета ника при разговоре:</sys:String>
+    <sys:String x:Key="ToolTip_SpeakingNickMode">Выбор поведения цвета никнейма при активации речи: подсвечивать выбранным неоновым цветом, сохранять привычный цвет или подсвечивать ярким белым.</sys:String>
+    <!-- Enum Values: SpeakingNicknameColorMode -->
+    <sys:String x:Key="Enum_SpeakingNicknameColorMode_UseAccentColor">Цветом подсветки говорящего (Динамический неон)</sys:String>
+    <sys:String x:Key="Enum_SpeakingNicknameColorMode_KeepNormalColor">Сохранять обычный цвет ника (Не менять при разговоре)</sys:String>
+    <sys:String x:Key="Enum_SpeakingNicknameColorMode_PureWhite">Яркий Чистый Белый (Максимальный контраст)</sys:String>
+
+    <sys:String x:Key="Settings_NicknameColor">Цвет никнеймов в списке:</sys:String>
+    <!-- Enum Values: NicknameTextColor -->
+    <sys:String x:Key="Enum_NicknameTextColor_White">Классический Белый</sys:String>
+    <sys:String x:Key="Enum_NicknameTextColor_LightGray">Светло-серый (Silver)</sys:String>
+    <sys:String x:Key="Enum_NicknameTextColor_NeonGreen">Неоновый Зеленый</sys:String>
+    <sys:String x:Key="Enum_NicknameTextColor_CyanBlue">Небесно-Голубой</sys:String>
+    <sys:String x:Key="Enum_NicknameTextColor_GoldYellow">Золотистый Желтый</sys:String>
+    <sys:String x:Key="Enum_NicknameTextColor_HotPink">Ярко-Розовый</sys:String>
+    <sys:String x:Key="Enum_NicknameTextColor_SoftAmber">Мягкий Янтарный</sys:String>
+
+    <!-- Enum Values: WhisperAccentColor -->
+    <sys:String x:Key="Enum_WhisperAccentColor_GoldAmber">Золотой Янтарь (Gold)</sys:String>
+    <sys:String x:Key="Enum_WhisperAccentColor_NeonRed">Неоновый Красный (Red)</sys:String>
+    <sys:String x:Key="Enum_WhisperAccentColor_ElectricOrange">Электрик Оранжевый</sys:String>
+    <sys:String x:Key="Enum_WhisperAccentColor_HotPurple">Яркий Фиолетовый</sys:String>
+    <sys:String x:Key="Enum_WhisperAccentColor_CyanBlue">Цианово-Голубой</sys:String>
+    <!-- TeamSpeak Connection Mode Enums -->
+    <sys:String x:Key="Enum_TeamSpeakConnectionMode_Auto">Автоматический выбор (TS3 &amp; TS6 Dual-Scan)</sys:String>
+    <sys:String x:Key="Enum_TeamSpeakConnectionMode_TeamSpeak3">TeamSpeak 3 (ClientQuery TCP порт 25639)</sys:String>
+    <sys:String x:Key="Enum_TeamSpeakConnectionMode_TeamSpeak6">TeamSpeak 6 (Remote API WebSocket порт 5899)</sys:String>
+</ResourceDictionary>

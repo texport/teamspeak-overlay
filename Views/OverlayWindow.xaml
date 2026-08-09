@@ -1,0 +1,342 @@
+<Window x:Class="TeamSpeakOverlay.Views.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TeamSpeakOverlay.Views"
+        xmlns:converters="clr-namespace:TeamSpeakOverlay.Infrastructure.Converters"
+        mc:Ignorable="d"
+        Title="TeamSpeak Overlay"
+        Width="{Binding OverlayWidth, FallbackValue=280}"
+        MinHeight="100"
+        MaxHeight="2000"
+        SizeToContent="Height"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisConverter"/>
+        <converters:CardStyleToBackgroundConverter x:Key="CardStyleBgConverter"/>
+        <converters:CardStyleToBorderConverter x:Key="CardStyleBorderConverter"/>
+        <converters:TalkingClientStyleConverter x:Key="TalkingClientStyleConverter"/>
+        <converters:ToastIconConverter x:Key="ToastIconConverter"/>
+    </Window.Resources>
+
+    <!-- Outer Window Container (No heavy shadow artifacts) -->
+    <Grid Margin="6" Opacity="{Binding OverlayOpacity}">
+        <Grid.LayoutTransform>
+            <ScaleTransform ScaleX="{Binding OverlayScale, FallbackValue=1.0}" ScaleY="{Binding OverlayScale, FallbackValue=1.0}"/>
+        </Grid.LayoutTransform>
+        
+        <Border Background="{Binding CardStyle, Converter={StaticResource CardStyleBgConverter}}"
+                BorderBrush="{Binding CardStyle, Converter={StaticResource CardStyleBorderConverter}}"
+                BorderThickness="{Binding CardStyle, Converter={StaticResource CardStyleBorderConverter}, ConverterParameter=Thickness}"
+                CornerRadius="16" SnapsToDevicePixels="True">
+            <Grid Margin="14,12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Material 3 Header Section -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,6" Visibility="{Binding ShowHeader, Converter={StaticResource BoolToVisConverter}}">
+                    <!-- Top Utility Sub-Row (Author Branding + Mini Clock) -->
+                    <Grid Margin="0,0,0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Author Branding / Character Badge -->
+                        <Border Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#2500E5FF" BorderBrush="#4000E5FF" BorderThickness="1" CornerRadius="7" Padding="8,3" Visibility="{Binding IsHeaderBadgeVisible, Converter={StaticResource BoolToVisConverter}}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding DisplayedBadgePrefix}" Foreground="#A0FFFFFF" FontSize="10.5" FontFamily="Segoe UI" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                <TextBlock Text="{Binding DisplayedBadgeText}" Foreground="#FF00E5FF" FontWeight="Bold" FontSize="11" FontFamily="Segoe UI" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Real-Time Mini Clock -->
+                        <Border Grid.Column="1" HorizontalAlignment="Right" Background="#2AFFFFFF" CornerRadius="6" Padding="6,2" Visibility="{Binding ShowClockInHeader, Converter={StaticResource BoolToVisConverter}}">
+                            <TextBlock Text="{Binding CurrentTimeText}" Foreground="#00F5FF" FontWeight="Bold" FontSize="10.5" FontFamily="Segoe UI, Consolas"/>
+                        </Border>
+                    </Grid>
+
+                    <!-- Channel Name & Status -->
+                    <TextBlock Text="{Binding CurrentChannel.Name}" Style="{DynamicResource MaterialOverlayHeaderChannel}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding StatusText}" Style="{DynamicResource MaterialOverlayHeaderStatus}"/>
+                </StackPanel>
+
+                <!-- Standby Indicator when header is hidden and no speakers are active -->
+                <Border Grid.Row="0" 
+                        Background="#2500E5FF" 
+                        CornerRadius="8" 
+                        Padding="10,5" 
+                        Margin="0,2,0,4"
+                        HorizontalAlignment="Center">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ShowHeader}" Value="False"/>
+                                        <Condition Binding="{Binding ClientsView.IsEmpty}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Text="{DynamicResource Overlay_Standby}" Foreground="#A0FFFFFF" FontSize="11" FontWeight="SemiBold"/>
+                </Border>
+
+                <!-- Header Separator -->
+                <Rectangle Grid.Row="1" Style="{DynamicResource MaterialOverlaySeparator}" Visibility="{Binding ShowHeader, Converter={StaticResource BoolToVisConverter}}"/>
+
+                <!-- Client List Container -->
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <!-- Regular Clients -->
+                        <ItemsControl ItemsSource="{Binding ClientsView}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="10" Padding="10,8" Margin="0,3" SnapsToDevicePixels="True">
+                                        <Border.Background>
+                                            <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="Background">
+                                                <Binding Path="IsTalking"/>
+                                                <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                <Binding Path="IsWhisper"/>
+                                                <Binding Path="DataContext.WhisperAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                            </MultiBinding>
+                                        </Border.Background>
+                                        <Border.BorderBrush>
+                                            <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="BorderBrush">
+                                                <Binding Path="IsTalking"/>
+                                                <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                <Binding Path="IsWhisper"/>
+                                                <Binding Path="DataContext.WhisperAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                            </MultiBinding>
+                                        </Border.BorderBrush>
+                                        <Border.BorderThickness>
+                                            <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="BorderThickness">
+                                                <Binding Path="IsTalking"/>
+                                                <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                <Binding Path="IsWhisper"/>
+                                                <Binding Path="DataContext.WhisperAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                            </MultiBinding>
+                                        </Border.BorderThickness>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Voice Speaking Indicator (Animated 3-Bar Equalizer Wave when talking) -->
+                                            <Grid Grid.Column="0" Margin="0,0,10,0" VerticalAlignment="Center">
+                                                <!-- Equalizer Bars (Talking) -->
+                                                <StackPanel Orientation="Horizontal" Visibility="{Binding IsTalking, Converter={StaticResource BoolToVisConverter}}">
+                                                    <Border Width="2.5" Height="13" CornerRadius="1.2" Margin="0.8,0" RenderTransformOrigin="0.5,1">
+                                                        <Border.Background>
+                                                            <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="Dot">
+                                                                <Binding Path="IsTalking"/>
+                                                                <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                                <Binding Path="IsWhisper"/>
+                                                                <Binding Path="DataContext.WhisperAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                            </MultiBinding>
+                                                        </Border.Background>
+                                                        <Border.RenderTransform>
+                                                            <ScaleTransform ScaleY="0.4"/>
+                                                        </Border.RenderTransform>
+                                                        <Border.Triggers>
+                                                            <EventTrigger RoutedEvent="Loaded">
+                                                                <BeginStoryboard>
+                                                                    <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" From="0.25" To="1.0" Duration="0:0:0.32"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </EventTrigger>
+                                                        </Border.Triggers>
+                                                    </Border>
+                                                    <Border Width="2.5" Height="13" CornerRadius="1.2" Margin="0.8,0" RenderTransformOrigin="0.5,1">
+                                                        <Border.Background>
+                                                            <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="Dot">
+                                                                <Binding Path="IsTalking"/>
+                                                                <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                                <Binding Path="IsWhisper"/>
+                                                                <Binding Path="DataContext.WhisperAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                            </MultiBinding>
+                                                        </Border.Background>
+                                                        <Border.RenderTransform>
+                                                            <ScaleTransform ScaleY="0.8"/>
+                                                        </Border.RenderTransform>
+                                                        <Border.Triggers>
+                                                            <EventTrigger RoutedEvent="Loaded">
+                                                                <BeginStoryboard>
+                                                                    <Storyboard RepeatBehavior="Forever" AutoReverse="True" BeginTime="0:0:0.1">
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" From="0.35" To="1.0" Duration="0:0:0.25"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </EventTrigger>
+                                                        </Border.Triggers>
+                                                    </Border>
+                                                    <Border Width="2.5" Height="13" CornerRadius="1.2" Margin="0.8,0" RenderTransformOrigin="0.5,1">
+                                                        <Border.Background>
+                                                            <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="Dot">
+                                                                <Binding Path="IsTalking"/>
+                                                                <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                                <Binding Path="IsWhisper"/>
+                                                                <Binding Path="DataContext.WhisperAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                            </MultiBinding>
+                                                        </Border.Background>
+                                                        <Border.RenderTransform>
+                                                            <ScaleTransform ScaleY="0.5"/>
+                                                        </Border.RenderTransform>
+                                                        <Border.Triggers>
+                                                            <EventTrigger RoutedEvent="Loaded">
+                                                                <BeginStoryboard>
+                                                                    <Storyboard RepeatBehavior="Forever" AutoReverse="True" BeginTime="0:0:0.18">
+                                                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" From="0.2" To="0.9" Duration="0:0:0.38"/>
+                                                                    </Storyboard>
+                                                                </BeginStoryboard>
+                                                            </EventTrigger>
+                                                        </Border.Triggers>
+                                                    </Border>
+                                                </StackPanel>
+
+                                                <!-- Static Dot (Not Talking) -->
+                                                <Ellipse Width="8" Height="8" Visibility="{Binding IsTalking, Converter={StaticResource InverseBoolToVisConverter}}" Fill="#35FFFFFF"/>
+                                            </Grid>
+
+                                            <!-- Player Nickname -->
+                                            <TextBlock Grid.Column="1" Text="{Binding Nickname}" FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis">
+                                                <TextBlock.FontWeight>
+                                                    <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="FontWeight">
+                                                        <Binding Path="IsTalking"/>
+                                                        <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                        <Binding Path="IsWhisper"/>
+                                                        <Binding Path="DataContext.WhisperAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                    </MultiBinding>
+                                                </TextBlock.FontWeight>
+                                                <TextBlock.Foreground>
+                                                    <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="Foreground">
+                                                        <Binding Path="IsTalking"/>
+                                                        <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                        <Binding Path="IsWhisper"/>
+                                                        <Binding Path="DataContext.WhisperAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                        <Binding Path="DataContext.NicknameColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                        <Binding Path="DataContext.SpeakingNickMode" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Foreground>
+                                            </TextBlock>
+
+                                            <!-- Clean Badges (Mic / Mute / Deafened Material 3 Icons) -->
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <!-- Mic Muted Badge -->
+                                                <Border Style="{DynamicResource MaterialBadgeIconBorder}" 
+                                                        Visibility="{Binding IsMicMuted, Converter={StaticResource BoolToVisConverter}}"
+                                                        ToolTip="{DynamicResource ToolTip_MicMuted}">
+                                                    <Grid Width="12" Height="12">
+                                                        <Path Stretch="Uniform" Fill="{DynamicResource OnErrorBrush}"
+                                                              Data="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zM19 10h-1.7c0 3-2.54 5.1-5.3 5.1S6.7 13 6.7 10H5c0 3.41 2.72 6.23 6 6.72V20h2v-3.28c3.28-.49 6-3.31 6-6.72z"/>
+                                                        <Path Stretch="Uniform" Fill="{DynamicResource OnErrorBrush}"
+                                                              Data="M4.27 3L3 4.27l16.73 16.73L21 19.73 4.27 3z"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <!-- Deafened Badge -->
+                                                <Border Style="{DynamicResource MaterialBadgeIconBorder}" 
+                                                        Visibility="{Binding IsDeafened, Converter={StaticResource BoolToVisConverter}}"
+                                                        ToolTip="{DynamicResource ToolTip_SoundDeafened}">
+                                                    <Grid Width="12" Height="12">
+                                                        <Path Stretch="Uniform" Fill="{DynamicResource OnErrorBrush}"
+                                                              Data="M12 3c-4.97 0-9 4.03-9 9v7c0 1.1.9 2 2 2h4v-8H5v-1c0-3.87 3.13-7 7-7s7 3.13 7 7v1h-4v8h4c1.1 0 2-.9 2-2v-7c0-4.97-4.03-9-9-9z"/>
+                                                        <Path Stretch="Uniform" Fill="{DynamicResource OnErrorBrush}"
+                                                              Data="M4.27 3L3 4.27l16.73 16.73L21 19.73 4.27 3z"/>
+                                                    </Grid>
+                                                </Border>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Whisper Clients -->
+                        <ItemsControl ItemsSource="{Binding WhisperClientsView}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="10" Padding="10,8" Margin="0,3" SnapsToDevicePixels="True">
+                                        <Border.Background>
+                                            <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="Background">
+                                                <Binding Path="IsTalking"/>
+                                                <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                <Binding Path="IsWhisper"/>
+                                            </MultiBinding>
+                                        </Border.Background>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Voice Speaking Indicator Dot -->
+                                            <Ellipse Grid.Column="0" Width="9" Height="9" Margin="0,0,10,0" VerticalAlignment="Center">
+                                                <Ellipse.Fill>
+                                                    <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="Dot">
+                                                        <Binding Path="IsTalking"/>
+                                                        <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                        <Binding Path="IsWhisper"/>
+                                                    </MultiBinding>
+                                                </Ellipse.Fill>
+                                            </Ellipse>
+
+                                            <!-- Player Nickname -->
+                                            <TextBlock Grid.Column="1" Text="{Binding Nickname}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis">
+                                                <TextBlock.Foreground>
+                                                    <MultiBinding Converter="{StaticResource TalkingClientStyleConverter}" ConverterParameter="Foreground">
+                                                        <Binding Path="IsTalking"/>
+                                                        <Binding Path="DataContext.TalkingAccentColor" RelativeSource="{RelativeSource AncestorType=Window}"/>
+                                                        <Binding Path="IsWhisper"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Foreground>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Floating Toast Notifications Container -->
+                <ItemsControl Grid.Row="2" ItemsSource="{Binding ToastNotifications}" VerticalAlignment="Bottom" Margin="0,4,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#F0191822" BorderBrush="#00E5FF" BorderThickness="1.2" CornerRadius="10" Padding="10,8" Margin="0,3" Effect="{DynamicResource ElevationShadow2}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding IconType, Converter={StaticResource ToastIconConverter}}" FontSize="15" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Title}" Foreground="#FF00E5FF" FontWeight="Bold" FontSize="11.5"/>
+                                        <TextBlock Text="{Binding Message}" Foreground="#F0FFFFFF" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
