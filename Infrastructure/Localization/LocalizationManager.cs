@@ -15,17 +15,18 @@ namespace TeamSpeakOverlay.Infrastructure.Localization
                 var appResources = System.Windows.Application.Current?.Resources;
                 if (appResources == null) return;
 
-                string resourcePath = language switch
+                string fileName = language switch
                 {
-                    AppLanguage.English => "Themes/Strings.en-US.xaml",
-                    AppLanguage.Ukrainian => "Themes/Strings.uk-UA.xaml",
-                    AppLanguage.Russian => "Themes/Strings.ru-RU.xaml",
-                    _ => "Themes/Strings.ru-RU.xaml"
+                    AppLanguage.English => "Strings.en-US.xaml",
+                    AppLanguage.Ukrainian => "Strings.uk-UA.xaml",
+                    AppLanguage.Russian => "Strings.ru-RU.xaml",
+                    _ => "Strings.ru-RU.xaml"
                 };
 
+                var packUri = new Uri($"pack://application:,,,/TeamSpeakOverlay;component/Themes/{fileName}", UriKind.Absolute);
                 var newDict = new ResourceDictionary
                 {
-                    Source = new Uri(resourcePath, UriKind.Relative)
+                    Source = packUri
                 };
 
                 // Find and remove any existing string dictionary
@@ -39,7 +40,7 @@ namespace TeamSpeakOverlay.Infrastructure.Localization
                 }
 
                 appResources.MergedDictionaries.Add(newDict);
-                Logger.Info($"Applied Language: {language} (Dictionary: {resourcePath})", "LocalizationManager");
+                Logger.Info($"Applied Language: {language} (PackUri: {packUri})", "LocalizationManager");
                 LanguageChanged?.Invoke(language);
             }
             catch (Exception ex)
