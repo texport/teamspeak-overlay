@@ -19,6 +19,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DefaultDirName={autopf}\TeamSpeakOverlay
 DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
+PrivilegesRequiredOverridesAllowed=commandline dialog
 LicenseFile=LICENSE
 SetupIconFile=app.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
@@ -42,7 +43,7 @@ Source: "TeamSpeakOverlayDev.cer"; DestDir: "{tmp}"; Flags: ignoreversion delete
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{userdesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; Flags: uninsneveruninstall
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 Filename: "certutil.exe"; Parameters: "-addstore -user ""TrustedPublisher"" ""{tmp}\TeamSpeakOverlayDev.cer"""; Flags: runhidden
