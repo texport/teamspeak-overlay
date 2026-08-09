@@ -2,8 +2,11 @@
 
 [![Framework](https://img.shields.io/badge/.NET-8.0--WPF-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-v1.1.0--Alpha-orange.svg)](https://github.com/SergeyIvanovPro/teamspeak-overlay/releases)
-[![Lineage II](https://img.shields.io/badge/Lineage%20II-Supported-00E5FF)](https://github.com/SergeyIvanovPro/teamspeak-overlay)
+[![Framework](https://img.shields.io/badge/.NET-8.0--WPF-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/Version-v1.1.0--Alpha-orange.svg)](https://github.com/texport/teamspeak-overlay/releases)
+[![Languages](https://img.shields.io/badge/Languages-RU%20|%20EN%20|%20UK-brightgreen)](#-мультиязычность)
+[![Lineage II](https://img.shields.io/badge/Lineage%20II-Supported-00E5FF)](https://github.com/texport/teamspeak-overlay)
 [![Design](https://img.shields.io/badge/UI-Material%20Design%203-6750A4)](https://m3.material.io/)
 
 Современный, производительный и визуально безупречный голосовой оверлей для **TeamSpeak 3** и **TeamSpeak 6**, созданный специально для игроков **Lineage II** и командных геймеров.
@@ -13,15 +16,21 @@
 ## ✨ Ключевые возможности
 
 - 🎮 **Авто-считывание ника персонажа Lineage II**:
-  Оверлей автоматически считывает имя вашего персонажа из заголовка игрового окна Lineage II (`LU4 - CharacterName`) и выводит его на плашку в шапке (с возможностью переключения на Telegram `@handle`).
+  Оверлей автоматически считывает имя вашего персонажа из заголовка игрового окна Lineage II (`LU4 - CharacterName`) и выводит его на плашку в шапке (с возможностью переключения на контакты разработчика).
 - ⚡ **Dual Engine (TS3 ClientQuery & TS6 WebSocket)**:
   Автоматическое сканирование и подключение как к классическому **TeamSpeak 3 ClientQuery** (порт 25639), так и к новому **TeamSpeak 6 WebSocket API** (порт 5899).
+- 🌐 **Полная Мультиязычность (RU, EN, UK)**:
+  Динамическое переключение языка интерфейса приложения, контекстного меню трея и подсказок на **русский**, **английский** и **украинский** языки.
+- 🚀 **Автоматическая проверка обновлений**:
+  Интеграция с GitHub API для проверки свежих версий прямо из приложения и меню системного трея.
+- 🛡️ **Подписанный сертификат доверия**:
+  Встроенная автоматическая регистрация доверенного сертификата разработчика во время установки без всплывающих предупреждений безопасности.
 - 🎨 **Material Design 3 & Glassmorphism**:
   Премиальный современный интерфейс с плавающей стеклянной панелью, плавными анимациями и поддержкой светлой/темной тем.
 - 🟢 **Кастомизация цвета говорящего игрока**:
   Выбор акцентного цвета подсветки ника говорящего соклановца из палитры Tailwind (Neon Cyan, Emerald Green, Electric Violet, Crimson Red, Gold Yellow).
 - ⏱️ **Формат времени и подсказки**:
-  Отображение часов (12ч/24ч) и 0ms мгновенные всплывающие подсказки при наведении на любой элемент настроек.
+  Отображение часов (12ч/24ч) и мгновенные всплывающие подсказки при наведении на любой элемент настроек.
 - 🔔 **Уведомления и тычки (Poke & Text Alerts)**:
   Всплывающие Material 3 тост-уведомления со звуковым сопровождением при получении тычек (`👉 Poke`) и личных сообщений в TS.
 - ⌨️ **Горячие клавиши (Hotkeys)**:
@@ -37,12 +46,14 @@
 ```text
 TeamSpeakOverlay/
 ├── Application/         # Бизнес-логика и UseCases (Strict UseCase Architecture)
-│   └── UseCases/       # GetHeaderBadgeInfoUseCase, UpdateSettingsUseCase и др.
+│   └── UseCases/       # CheckForUpdates, ExportLogs, ApplyLanguage, ApplyTheme и др.
 ├── Domain/              # Доменные сущности, контракты и интерфейсы
 │   ├── Entities/       # AppVersion, ClientItem, ChannelInfo, OverlaySettings
 │   └── Interfaces/     # ITeamSpeakClient, ISettingsRepository
 ├── Infrastructure/      # Сетевое взаимодействие, Win32 API и сканеры
 │   ├── GameTracker/    # Отслеживание активного окна Lineage II (Win32 API)
+│   ├── Localization/   # Manger локализации (Pack URI ResourceDictionary)
+│   ├── Update/         # GitHub AutoUpdate Service
 │   └── TeamSpeak/      # TS3 ClientQuery & TS6 WebSocket сканер
 ├── ViewModels/          # MainViewModel, SettingsViewModel (WPF Data Binding)
 └── Views/               # Material 3 WPF Окна (OverlayWindow, SettingsWindow)
@@ -78,9 +89,9 @@ TeamSpeakOverlay/
    dotnet build -c Release
    ```
 
-3. Для публикации одиночного бинарника:
+3. Для публикации одиночного автономного бинарника:
    ```bash
-   dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
+   dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
    ```
 
 4. Сборка установочного Setup `.exe` (Inno Setup):
@@ -92,9 +103,8 @@ TeamSpeakOverlay/
 
 ---
 
-## 👤 Автор и Лицензия
+## 👤 Лицензия
 
-- **Автор**: [@SergeyIvanovPro](https://github.com/SergeyIvanovPro)
 - **Репозиторий**: [github.com/texport/teamspeak-overlay](https://github.com/texport/teamspeak-overlay)
 - **Лицензия**: Распространяется под открытой лицензией [MIT](LICENSE).
 
